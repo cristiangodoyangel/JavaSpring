@@ -1,5 +1,7 @@
 package com.aluracursos.screeenmatch;
 
+import ch.qos.logback.core.encoder.JsonEscapeUtil;
+import com.aluracursos.screeenmatch.Service.ConsumoAPI;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +18,9 @@ public class ScreeenmatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("Hola Mundo desde Spring");
+		var consumoApi = new ConsumoAPI();
+		var json = consumoApi.obtenerDatos("https://www.omdbapi.com/?t=inception&apikey=1a68466f");
+		System.out.println(json);
+
 	}
 }

@@ -1,5 +1,11 @@
 package com.aluracursos.screeenmatch.Service;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 public class ConsumoAPI {
     public String obtenerDatos(String url) {
         HttpClient client = HttpClient.newHttpClient();
@@ -18,5 +24,7 @@ public class ConsumoAPI {
 
         String json = response.body();
         return json;
+        }
+
     }
-}
+

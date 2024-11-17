@@ -3,6 +3,7 @@ package com.aluracursos.screeenmatch;
 import ch.qos.logback.core.encoder.JsonEscapeUtil;
 import com.aluracursos.screeenmatch.Service.ConsumoAPI;
 import com.aluracursos.screeenmatch.Service.ConvierteDatos;
+import com.aluracursos.screeenmatch.model.DatosEpisodio;
 import com.aluracursos.screeenmatch.model.DatosSerie;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,6 +27,9 @@ public class ScreeenmatchApplication implements CommandLineRunner {
 		ConvierteDatos conversor = new ConvierteDatos();
 		var datos = conversor.obtenerDatos(json, DatosSerie.class);
 		System.out.println(datos);
+		json = consumoApi.obtenerDatos("https://www.omdbapi.com/?t=the+big+bang+theory&Season=1&episode=1&apikey=1a68466f");
+		DatosEpisodio episodios = conversor.obtenerDatos(json, DatosEpisodio.class);
+		System.out.println(episodios);
 
 	}
 }

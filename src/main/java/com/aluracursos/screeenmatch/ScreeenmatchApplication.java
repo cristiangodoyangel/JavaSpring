@@ -5,6 +5,7 @@ import com.aluracursos.screeenmatch.Service.ConvierteDatos;
 import com.aluracursos.screeenmatch.model.DatosEpisodio;
 import com.aluracursos.screeenmatch.model.DatosSerie;
 import com.aluracursos.screeenmatch.model.DatosTemporadas;
+import com.aluracursos.screeenmatch.principal.EjemploStreams;
 import com.aluracursos.screeenmatch.principal.Principal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,8 +26,10 @@ public class ScreeenmatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Principal principal = new Principal();
-		principal.muestraElMenu();
+	/*	Principal principal = new Principal();
+		principal.muestraElMenu(); */
+		EjemploStreams ejemploStreams = new EjemploStreams();
+		ejemploStreams.muestraEjemplo();
 
 
 

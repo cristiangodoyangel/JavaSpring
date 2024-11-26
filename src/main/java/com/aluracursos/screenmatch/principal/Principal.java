@@ -1,10 +1,9 @@
-package com.aluracursos.screeenmatch.principal;
+package com.aluracursos.screenmatch.principal;
 
-import com.aluracursos.screeenmatch.Service.ConsumoAPI;
-import com.aluracursos.screeenmatch.Service.ConvierteDatos;
-import com.aluracursos.screeenmatch.model.DatosEpisodio;
-import com.aluracursos.screeenmatch.model.DatosSerie;
-import com.aluracursos.screeenmatch.model.DatosTemporadas;
+import com.aluracursos.screenmatch.Service.ConsumoAPI;
+import com.aluracursos.screenmatch.Service.ConvierteDatos;
+import com.aluracursos.screenmatch.model.DatosSerie;
+import com.aluracursos.screenmatch.model.DatosTemporadas;
 
 import java.util.ArrayList;
 import java.util.List;

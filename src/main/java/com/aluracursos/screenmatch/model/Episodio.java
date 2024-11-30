@@ -48,4 +48,6 @@ public class Episodio {
     public void setFechaDeLanzamiento(LocalDate fechaDeLanzamiento) {
         this.fechaDeLanzamiento = fechaDeLanzamiento;
     }
+
+system.out.println(fechaDeLanzamiento);
 }

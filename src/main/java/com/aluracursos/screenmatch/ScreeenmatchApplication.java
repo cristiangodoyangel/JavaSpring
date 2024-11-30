@@ -1,9 +1,11 @@
 package com.aluracursos.screenmatch;
 
-import com.aluracursos.screenmatch.principal.EjemploStreams;
+import com.aluracursos.screenmatch.principal.Principal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
 
 @SpringBootApplication
 public class ScreeenmatchApplication implements CommandLineRunner {
@@ -21,6 +23,8 @@ public class ScreeenmatchApplication implements CommandLineRunner {
 		principal.muestraElMenu();
 //		EjemploStreams ejemploStreams = new EjemploStreams();
 //		ejemploStreams.muestraEjemplo();
+
+		//Convertir todas las infromaciones a una lista del tipo DatosEpisodio
 
 
 

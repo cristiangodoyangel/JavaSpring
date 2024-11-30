@@ -2,12 +2,16 @@ package com.aluracursos.screenmatch.principal;
 
 import com.aluracursos.screenmatch.Service.ConsumoAPI;
 import com.aluracursos.screenmatch.Service.ConvierteDatos;
+import com.aluracursos.screenmatch.model.DatosEpisodio;
 import com.aluracursos.screenmatch.model.DatosSerie;
 import com.aluracursos.screenmatch.model.DatosTemporadas;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+
+
 
 public class Principal {
     private Scanner teclado = new Scanner(System.in);
@@ -32,7 +36,7 @@ public class Principal {
             temporadas.add(datosTemporadas);
 
         }
-        temporadas.forEach(System.out::println);
+//        temporadas.forEach(System.out::println);
 
         /*for (int i = 0; i < datos.totalDeTemporadas(); i++) {
             List<DatosEpisodio> episodiosTemporadas = temporadas.get(i).episodios();
@@ -43,5 +47,16 @@ public class Principal {
             }
         }*/
         temporadas.forEach(t -> t.episodios().forEach(e-> System.out.println(e.titulo())));
+
+      List<DatosEpisodio> datosEpisodios = temporadas.stream()
+              .flatMap(t -> t.episodios().stream())
+              .toList();
+
+      //     Top 5 mejores episodios
+
+        datosEpisodios.stream()
+                .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
+                .limit(5)
+                .forEach(System.out::println);
     }
 }

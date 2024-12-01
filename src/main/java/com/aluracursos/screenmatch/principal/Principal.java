@@ -7,10 +7,9 @@ import com.aluracursos.screenmatch.model.DatosSerie;
 import com.aluracursos.screenmatch.model.DatosTemporadas;
 import com.aluracursos.screenmatch.model.Episodio;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -65,7 +64,42 @@ public class Principal {
                 .flatMap(t -> t.episodios().stream()
                         .map(d -> new Episodio(t.numero(), d)))
                 .collect(Collectors.toList());
-        episodios.forEach(System.out::println);
+//        episodios.forEach(System.out::println);
+
+//        busqueda de episodios a partir de X año
+        System.out.println("Busca por Fecha");
+        var fecha = teclado.nextInt();
+        teclado.nextLine();
+
+        LocalDate fechaBusqueda = LocalDate.of(fecha, 1, 1);
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+
+//        episodios.stream()
+//                .filter(e -> e.getFechaDeLanzamiento()!= null && e.getFechaDeLanzamiento()  .isAfter(fechaBusqueda))
+//                .forEach(e -> System.out.println(
+//                        "Temporada " + e.getTemporada() +
+//                                "Episodio " + e.getNumeroEpisodio() +
+//                                "Fecha de Lanzamiento: " + e.getFechaDeLanzamiento().format(dtf)
+//                ));
+//
+
+        // Muestra evaluaciones de todas las temporadas
+        Map<Integer, Double> evaluacionesPorTemporada = episodios.stream()
+                .filter(e -> e.getEvaluacion() > 0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada,
+                        Collectors.averagingDouble(Episodio::getEvaluacion)));
+        System.out.println(evaluacionesPorTemporada);
+
+        //Calcular estadísticas de las evaluaciones de los episodios
+        DoubleSummaryStatistics est = episodios.stream()
+                .filter(e -> e.getEvaluacion() > 0)
+                .collect(Collectors.summarizingDouble(Episodio::getEvaluacion));
+        System.out.println("Media " + est.getAverage());
+        System.out.println("Mejor episódio: " + est.getMax());
+        System.out.println("Peor episódio: " + est.getMin());
+        System.out.println("Cantidad " + est.getCount());
 
     }
 }

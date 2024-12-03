@@ -1,105 +1,172 @@
 package com.aluracursos.screenmatch.principal;
+// Define el paquete al que pertenece esta clase, utilizado para organizar el código.
+
+import com.aluracursos.screenmatch.model.DatosSerie;
+// Importa la clase DatosSerie para manejar datos relacionados con series.
+
+import com.aluracursos.screenmatch.model.DatosTemporadas;
+// Importa la clase DatosTemporadas para manejar datos relacionados con temporadas.
 
 import com.aluracursos.screenmatch.Service.ConsumoAPI;
+// Importa la clase ConsumoAPI, utilizada para consumir datos de una API.
+
 import com.aluracursos.screenmatch.Service.ConvierteDatos;
-import com.aluracursos.screenmatch.model.DatosEpisodio;
-import com.aluracursos.screenmatch.model.DatosSerie;
-import com.aluracursos.screenmatch.model.DatosTemporadas;
-import com.aluracursos.screenmatch.model.Episodio;
+// Importa la clase ConvierteDatos para transformar datos JSON a objetos.
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+// Importa la clase ArrayList, utilizada para manejar listas dinámicas.
 
+import java.util.List;
+// Importa la clase List, una interfaz para listas de objetos.
+
+import java.util.Scanner;
+// Importa la clase Scanner, utilizada para recibir entrada del usuario.
 
 public class Principal {
+// Define la clase principal que contiene la lógica de interacción del programa.
+
     private Scanner teclado = new Scanner(System.in);
+    // Crea un objeto Scanner para recibir entrada desde la consola.
+
     private ConsumoAPI consumoApi = new ConsumoAPI();
+    // Crea un objeto ConsumoAPI para realizar solicitudes a una API.
+
     private final String URL_BASE = "https://www.omdbapi.com/?t=";
+    // Define la URL base de la API.
+
     private final String API_KEY = "&apikey=1a68466f";
+    // Define la clave de API necesaria para realizar solicitudes.
+
     private ConvierteDatos conversor = new ConvierteDatos();
+    // Crea un objeto ConvierteDatos para transformar datos JSON a objetos Java.
 
+    private List<DatosSerie> datosSeries = new ArrayList<>();
+    // Define lista datosSerie para busqueda.
 
+    public void muestraElMenu() {
+        // Método que muestra el menú principal y gestiona la navegación del usuario.
 
-    public void muestraElMenu(){
-        System.out.println("Por favor escriba el nombre de la serie: ");
+        var opcion = -1;
+        // Inicializa la opción seleccionada por el usuario.
+
+        while (opcion != 0) {
+            // Bucle que continúa mostrando el menú hasta que la opción sea 0 (salir).
+
+            var menu = """
+                    1 - Buscar series 
+                    2 - Buscar episodios
+                    3 - Mostrar series buscadas
+                                  
+                    0 - Salir
+                    """;
+            // Define el menú de opciones.
+
+            System.out.println(menu);
+            // Muestra el menú en la consola.
+
+            opcion = teclado.nextInt();
+            // Lee la opción seleccionada por el usuario.
+
+            teclado.nextLine();
+            // Limpia el buffer del Scanner.
+
+            switch (opcion) {
+                // Gestiona la opción seleccionada.
+
+                case 1:
+                    buscarSerieWeb();
+                    // Llama al método para buscar una serie en la web.
+                    break;
+
+                case 2:
+                    buscarEpisodioPorSerie();
+                    // Llama al método para buscar episodios de una serie.
+                    break;
+
+                case 3:
+                    mostrarSeriesBuscadas();
+
+                    // Imprime en la consola los datos de las series buscadas.
+                    break;
+
+                case 0:
+                    System.out.println("Cerrando la aplicación...");
+                    // Mensaje que indica el cierre de la aplicación.
+                    break;
+
+                default:
+                    System.out.println("Opción inválida");
+                    // Mensaje de error si la opción no es válida.
+            }
+        }
+    }
+
+    private DatosSerie getDatosSerie() {
+        // Método para obtener los datos de una serie desde la API.
+
+        System.out.println("Escribe el nombre de la serie que deseas buscar");
+        // Solicita al usuario el nombre de la serie.
+
         var nombreSerie = teclado.nextLine();
-        var json = consumoApi.obtenerDatos(URL_BASE + nombreSerie.replace(" ","+") + API_KEY);
-        var datos = conversor.obtenerDatos(json, DatosSerie.class);
-        System.out.println(datos);
+        // Lee el nombre de la serie ingresado por el usuario.
+
+        var json = consumoApi.obtenerDatos(URL_BASE + nombreSerie.replace(" ", "+") + API_KEY);
+        // Realiza una solicitud a la API reemplazando los espacios en blanco por "+".
+
+        System.out.println(json);
+        // Muestra la respuesta JSON de la API.
+
+        DatosSerie datos = conversor.obtenerDatos(json, DatosSerie.class);
+        // Convierte el JSON a un objeto de tipo DatosSerie.
+
+        return datos;
+        // Devuelve el objeto DatosSerie.
+    }
+
+    private void buscarEpisodioPorSerie() {
+        // Método para buscar los episodios de una serie específica.
+
+        DatosSerie datosSerie = getDatosSerie();
+        // Obtiene los datos de la serie.
 
         List<DatosTemporadas> temporadas = new ArrayList<>();
-        for (int i = 1; i <= datos.totalDeTemporadas() ; i++) {
-            json = consumoApi.obtenerDatos(URL_BASE + nombreSerie.replace(" ", "+") + "&Season="+i+API_KEY);
-            var datosTemporadas = conversor.obtenerDatos(json, DatosTemporadas.class);
-            temporadas.add(datosTemporadas);
+        // Crea una lista para almacenar las temporadas.
 
+        for (int i = 1; i <= datosSerie.totalTemporadas(); i++) {
+            // Itera sobre cada temporada de la serie.
+
+            var json = consumoApi.obtenerDatos(URL_BASE + datosSerie.titulo().replace(" ", "+") + "&season=" + i + API_KEY);
+            // Realiza una solicitud a la API para obtener datos de una temporada específica.
+
+            DatosTemporadas datosTemporada = conversor.obtenerDatos(json, DatosTemporadas.class);
+            // Convierte el JSON de la temporada a un objeto DatosTemporadas.
+
+            temporadas.add(datosTemporada);
+            // Agrega la temporada a la lista.
         }
-//        temporadas.forEach(System.out::println);
 
-        /*for (int i = 0; i < datos.totalDeTemporadas(); i++) {
-            List<DatosEpisodio> episodiosTemporadas = temporadas.get(i).episodios();
-
-            for (int j = 0; j < episodiosTemporadas.size(); j++) {
-                System.out.println(episodiosTemporadas.get(j).titulo());
-
-            }
-        }*/
-        temporadas.forEach(t -> t.episodios().forEach(e-> System.out.println(e.titulo())));
-
-      List<DatosEpisodio> datosEpisodios = temporadas.stream()
-              .flatMap(t -> t.episodios().stream())
-              .toList();
-
-      //     Top 5 mejores episodios
-
-        datosEpisodios.stream()
-                .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
-                .limit(5)
-                .forEach(System.out::println);
-
-//        convirtiendo los datos a una lista Episodio
-        List<Episodio> episodios = temporadas.stream()
-                .flatMap(t -> t.episodios().stream()
-                        .map(d -> new Episodio(t.numero(), d)))
-                .collect(Collectors.toList());
-//        episodios.forEach(System.out::println);
-
-//        busqueda de episodios a partir de X año
-        System.out.println("Busca por Fecha");
-        var fecha = teclado.nextInt();
-        teclado.nextLine();
-
-        LocalDate fechaBusqueda = LocalDate.of(fecha, 1, 1);
-
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-
-//        episodios.stream()
-//                .filter(e -> e.getFechaDeLanzamiento()!= null && e.getFechaDeLanzamiento()  .isAfter(fechaBusqueda))
-//                .forEach(e -> System.out.println(
-//                        "Temporada " + e.getTemporada() +
-//                                "Episodio " + e.getNumeroEpisodio() +
-//                                "Fecha de Lanzamiento: " + e.getFechaDeLanzamiento().format(dtf)
-//                ));
-//
-
-        // Muestra evaluaciones de todas las temporadas
-        Map<Integer, Double> evaluacionesPorTemporada = episodios.stream()
-                .filter(e -> e.getEvaluacion() > 0)
-                .collect(Collectors.groupingBy(Episodio::getTemporada,
-                        Collectors.averagingDouble(Episodio::getEvaluacion)));
-        System.out.println(evaluacionesPorTemporada);
-
-        //Calcular estadísticas de las evaluaciones de los episodios
-        DoubleSummaryStatistics est = episodios.stream()
-                .filter(e -> e.getEvaluacion() > 0)
-                .collect(Collectors.summarizingDouble(Episodio::getEvaluacion));
-        System.out.println("Media " + est.getAverage());
-        System.out.println("Mejor episódio: " + est.getMax());
-        System.out.println("Peor episódio: " + est.getMin());
-        System.out.println("Cantidad " + est.getCount());
-
+        temporadas.forEach(System.out::println);
+        // Imprime en la consola los datos de cada temporada.
     }
+
+    private void buscarSerieWeb() {
+        // Método para buscar una serie y mostrar sus datos.
+
+        DatosSerie datos = getDatosSerie();
+        // Obtiene los datos de la serie.
+
+        datosSeries.add(datos);
+        // Agrega los datos de la serie a la lista.
+
+        System.out.println(datos);
+        // Imprime en la consola los datos de la serie.
+    }
+
+    private void mostrarSeriesBuscadas() {
+        // Método para mostrar los datos de las series buscadas.
+
+        datosSeries.forEach(System.out::println);
+        // Imprime en la consola los datos de cada serie.
+    }
+
 }

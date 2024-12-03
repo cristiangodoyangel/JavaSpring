@@ -15,5 +15,4 @@ public enum Categoria {
         this.categoriaOmdb = categoriaOmdb;
     }
 
-    JsonEscapeUtil;
 }

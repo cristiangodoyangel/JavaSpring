@@ -14,5 +14,5 @@ public enum Categoria {
     Categoria(String categoriaOmdb) {
         this.categoriaOmdb = categoriaOmdb;
     }
-JsonEscapeUtil;
+//este es un mensaje de testing
 }

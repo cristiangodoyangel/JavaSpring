@@ -1,5 +1,7 @@
 package com.aluracursos.screenmatch.model;
 
+import ch.qos.logback.core.encoder.JsonEscapeUtil;
+
 public enum Categoria {
     ACCION("Action"),
     ROMANCE("Romance"),
@@ -12,4 +14,6 @@ public enum Categoria {
     Categoria(String categoriaOmdb) {
         this.categoriaOmdb = categoriaOmdb;
     }
+
+    JsonEscapeUtil;
 }

@@ -15,4 +15,13 @@ public enum Categoria {
         this.categoriaOmdb = categoriaOmdb;
     }
 //este es un mensaje de testing
+public static Categoria fromString(String text) {
+    for (Categoria categoria : Categoria.values()) {
+        if (categoria.categoriaOmdb.equalsIgnoreCase(text)) {
+            return categoria;
+        }
+    }
+    throw new IllegalArgumentException("Ninguna categoría encontrada: " + text);
+}
+
 }

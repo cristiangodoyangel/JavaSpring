@@ -1,4 +1,4 @@
-package com.aluracursos.screenmatch.Service;
+package com.aluracursos.screenmatch.service;
 // Define el paquete de la clase para organizar las clases relacionadas con servicios.
 
 import java.io.IOException;

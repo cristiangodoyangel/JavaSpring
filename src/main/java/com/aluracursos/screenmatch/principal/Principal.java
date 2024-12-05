@@ -7,10 +7,10 @@ import com.aluracursos.screenmatch.model.DatosSerie;
 import com.aluracursos.screenmatch.model.DatosTemporadas;
 // Importa la clase DatosTemporadas para manejar datos relacionados con temporadas.
 
-import com.aluracursos.screenmatch.Service.ConsumoAPI;
+import com.aluracursos.screenmatch.service.ConsumoAPI;
 // Importa la clase ConsumoAPI, utilizada para consumir datos de una API.
 
-import com.aluracursos.screenmatch.Service.ConvierteDatos;
+import com.aluracursos.screenmatch.service.ConvierteDatos;
 import com.aluracursos.screenmatch.model.Serie;
 // Importa la clase ConvierteDatos para transformar datos JSON a objetos.
 

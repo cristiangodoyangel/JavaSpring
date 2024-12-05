@@ -1,8 +1,6 @@
-package com.aluracursos.screenmatch.Service;
+package com.aluracursos.screenmatch.service;
 // Define el paquete de la clase para organizar las clases relacionadas con servicios.
 
-import com.aluracursos.screenmatch.Service.IConvierteDatos;
-import com.aluracursos.screenmatch.model.DatosSerie;
 // Importa la clase DatosSerie para trabajar con datos de series.
 
 import com.fasterxml.jackson.core.JsonProcessingException;

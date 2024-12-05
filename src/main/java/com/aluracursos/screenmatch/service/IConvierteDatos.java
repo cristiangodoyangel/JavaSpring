@@ -1,4 +1,4 @@
-package com.aluracursos.screenmatch.Service;
+package com.aluracursos.screenmatch.service;
 // Define el paquete al que pertenece esta interfaz, utilizado para organizar el código.
 
 public interface IConvierteDatos {

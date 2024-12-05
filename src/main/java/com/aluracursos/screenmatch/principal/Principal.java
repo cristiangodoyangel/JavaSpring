@@ -11,15 +11,18 @@ import com.aluracursos.screenmatch.Service.ConsumoAPI;
 // Importa la clase ConsumoAPI, utilizada para consumir datos de una API.
 
 import com.aluracursos.screenmatch.Service.ConvierteDatos;
+import com.aluracursos.screenmatch.model.Serie;
 // Importa la clase ConvierteDatos para transformar datos JSON a objetos.
 
 import java.util.ArrayList;
 // Importa la clase ArrayList, utilizada para manejar listas dinámicas.
 
+import java.util.Comparator;
 import java.util.List;
 // Importa la clase List, una interfaz para listas de objetos.
 
 import java.util.Scanner;
+import java.util.stream.Collectors;
 // Importa la clase Scanner, utilizada para recibir entrada del usuario.
 
 public class Principal {
@@ -164,9 +167,16 @@ public class Principal {
 
     private void mostrarSeriesBuscadas() {
         // Método para mostrar los datos de las series buscadas.
+            List<Serie> series = new ArrayList<>();
+            series = datosSeries.stream() // Stream<DatosSerie>
+                    .map(d -> new Serie(d)) // Stream<Serie>
+                    .collect(Collectors.toList());
 
-        datosSeries.forEach(System.out::println);
-        // Imprime en la consola los datos de cada serie.
+            series.stream()
+                    .sorted(Comparator.comparing(Serie::getGenero))
+                    .forEach(System.out::println);
+
+        }
+
+
     }
-
-}

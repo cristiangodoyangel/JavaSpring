@@ -7,6 +7,7 @@ import com.aluracursos.screenmatch.model.DatosSerie;
 import com.aluracursos.screenmatch.model.DatosTemporadas;
 // Importa la clase DatosTemporadas para manejar datos relacionados con temporadas.
 
+import com.aluracursos.screenmatch.repository.SerieRepository;
 import com.aluracursos.screenmatch.service.ConsumoAPI;
 // Importa la clase ConsumoAPI, utilizada para consumir datos de una API.
 
@@ -23,6 +24,8 @@ import java.util.List;
 
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+
 // Importa la clase Scanner, utilizada para recibir entrada del usuario.
 
 public class Principal {
@@ -44,6 +47,13 @@ public class Principal {
     // Crea un objeto ConvierteDatos para transformar datos JSON a objetos Java.
 
     private List<DatosSerie> datosSeries = new ArrayList<>();
+
+    private SerieRepository repositorio;
+
+    public Principal(SerieRepository repository) {
+        this.repositorio = repository;
+
+    }
     // Define lista datosSerie para busqueda.
 
     public void muestraElMenu() {
@@ -157,8 +167,9 @@ public class Principal {
 
         DatosSerie datos = getDatosSerie();
         // Obtiene los datos de la serie.
-
-        datosSeries.add(datos);
+        Serie serie = new Serie(datos);
+        repositorio.save(serie);
+//        datosSeries.add(datos);
         // Agrega los datos de la serie a la lista.
 
         System.out.println(datos);
@@ -167,10 +178,7 @@ public class Principal {
 
     private void mostrarSeriesBuscadas() {
         // Método para mostrar los datos de las series buscadas.
-            List<Serie> series = new ArrayList<>();
-            series = datosSeries.stream() // Stream<DatosSerie>
-                    .map(d -> new Serie(d)) // Stream<Serie>
-                    .collect(Collectors.toList());
+            List<Serie> series = repositorio.findAll();
 
             series.stream()
                     .sorted(Comparator.comparing(Serie::getGenero))

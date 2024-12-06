@@ -4,6 +4,8 @@ package com.aluracursos.screenmatch;
 import com.aluracursos.screenmatch.principal.Principal;
 // Importa la clase Principal que contiene la lógica de interacción del usuario.
 
+import com.aluracursos.screenmatch.repository.SerieRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 // Importa la interfaz CommandLineRunner para ejecutar código al inicio de la aplicación.
 
@@ -17,6 +19,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // Marca esta clase como la aplicación principal de Spring Boot.
 
 public class ScreenmatchApplication implements CommandLineRunner {
+	@Autowired
+
+	private SerieRepository repository;
+
 // Declara la clase principal que implementa CommandLineRunner para ejecutar tareas iniciales.
 
 	public static void main(String[] args) {
@@ -30,7 +36,7 @@ public class ScreenmatchApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 // Método que se ejecuta automáticamente al iniciar la aplicación.
 
-		Principal principal = new Principal();
+		Principal principal = new Principal(repository);
 // Crea una instancia de la clase Principal.
 
 		principal.muestraElMenu();

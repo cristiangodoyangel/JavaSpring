@@ -2,11 +2,22 @@ package com.aluracursos.screenmatch.model;
 
 
 import com.aluracursos.screenmatch.service.ConsultaChatGPT;
+import jakarta.persistence.*;
+import jdk.jfr.Enabled;
 
+import java.util.List;
 import java.util.OptionalDouble;
+
+@Entity
+@Table(name = "series")
 
 public class Serie {
 
+     @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long    id;
+
+     @Column(unique = true)
     private String titulo;
 // Asocia la propiedad JSON "Title" con el campo `titulo`.
 
@@ -19,6 +30,7 @@ public class Serie {
     private String poster;
 // Asocia la propiedad JSON "Poster" con el campo `poster`.
 
+    @Enumerated(EnumType.STRING)
     private Categoria genero;
 // Asocia la propiedad JSON "Genre" con el campo `genero`.
 
@@ -27,8 +39,10 @@ public class Serie {
 
     private String sinopsis;
 // Asocia la propiedad JSON "Plot" con el campo `sinopsis`.
-//
-////    se crea el constructor
+    @Transient
+    private List<Episodio> episodios;
+
+    ////    se crea el constructor
 public Serie(DatosSerie datosSerie) {
     this.titulo = datosSerie.titulo();
     this.totalTemporadas = datosSerie.totalTemporadas();
@@ -50,6 +64,14 @@ public Serie(DatosSerie datosSerie) {
 
                 ", actores='" + actores + '\'' +
                 ", sinopsis='" + sinopsis + '\'';
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitulo() {

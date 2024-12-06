@@ -36,7 +36,7 @@ public Serie(DatosSerie datosSerie) {
     this.poster = datosSerie.poster();
     this.genero = Categoria.fromString(datosSerie.genero().split(":")[0].trim());
     this.actores = datosSerie.actores();
-    this.sinopsis = ConsultaChatGPT.obtenerTraduccion(datosSerie.sinopsis()) ;
+    this.sinopsis = datosSerie.sinopsis();
                                     }
 
     @Override

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import java.util.Comparator;
 import java.util.List;
-// Importa la clase List, una interfaz para listas de objetos.
+// Importa la clase List, una interfaz para listas de objetos....
 
 import java.util.Scanner;
 import java.util.stream.Collectors;

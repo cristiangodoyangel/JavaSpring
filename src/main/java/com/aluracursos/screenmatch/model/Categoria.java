@@ -12,16 +12,13 @@ public enum Categoria {
         this.categoriaOmdb = categoriaOmdb;
     }
 
-    public static Categoria fromString(String value) {
-        String[] categorias = value.split(","); // Divide las categorías separadas por comas
-        for (String categoria : categorias) {
-            for (Categoria c : Categoria.values()) {
-                if (c.name().equalsIgnoreCase(categoria.trim())) {
-                    return c; // Retorna la primera categoría válida encontrada
-                }
+    public static Categoria fromString(String text) {
+        for (Categoria categoria : Categoria.values()) {
+            if (categoria.categoriaOmdb.equalsIgnoreCase(text)) {
+                return categoria;
             }
         }
-        throw new IllegalArgumentException("Ninguna categoría encontrada: " + value);
+        throw new IllegalArgumentException("Ninguna categoria encontrada: " + text);
     }
 
 }

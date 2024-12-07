@@ -1,69 +1,42 @@
 package com.aluracursos.screenmatch.model;
 
-
 import com.aluracursos.screenmatch.service.ConsultaChatGPT;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
 
 @Entity
 @Table(name = "series")
-
 public class Serie {
-
-     @Id
-     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long    id;
-
-     @Column(unique = true)
-    private String titulo;
-// Asocia la propiedad JSON "Title" con el campo `titulo`.
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true)
+    private  String titulo;
     private Integer totalTemporadas;
-// Asocia la propiedad JSON "totalSeasons" con el campo `totalTemporadas`.
-
-    private String evaluacion;
-// Asocia la propiedad JSON "imdbRating" con el campo `evaluacion`.
-
+    private Double evaluacion;
     private String poster;
-// Asocia la propiedad JSON "Poster" con el campo `poster`.
-
     @Enumerated(EnumType.STRING)
     private Categoria genero;
-// Asocia la propiedad JSON "Genre" con el campo `genero`.
-
     private String actores;
-// Asocia la propiedad JSON "Actors" con el campo `actores`.
-
     private String sinopsis;
-// Asocia la propiedad JSON "Plot" con el campo `sinopsis`.
-    @Transient
-    private List<Episodio> episodios;
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Episodio> episodios = new ArrayList<>();
 
-    ////    se crea el constructor
-public Serie(DatosSerie datosSerie) {
-    this.titulo = datosSerie.titulo();
-    this.totalTemporadas = datosSerie.totalTemporadas();
-    this.evaluacion = String.valueOf(OptionalDouble.of(Double.valueOf(datosSerie.evaluacion())).orElse(0));
-    this.poster = datosSerie.poster();
-    this.genero = Categoria.fromString(datosSerie.genero().split(":")[0].trim());
-    this.actores = datosSerie.actores();
-    this.sinopsis = datosSerie.sinopsis();
-                                    }
+    public Serie(){}
 
-    @Override
-    public String toString() {
-        return
-                "genero=" + genero +
-                ", titulo='" + titulo + '\'' +
-                ", totalTemporadas=" + totalTemporadas +
-                ", evaluacion='" + evaluacion + '\'' +
-                ", poster='" + poster + '\'' +
-
-                ", actores='" + actores + '\'' +
-                ", sinopsis='" + sinopsis + '\'';
+    public Serie(DatosSerie datosSerie) {
+        this.titulo = datosSerie.titulo();
+        this.totalTemporadas = datosSerie.totalTemporadas();
+        this.evaluacion = OptionalDouble.of(Double.valueOf(datosSerie.evaluacion()))
+                .orElse(0);
+        this.poster = datosSerie.poster();
+        this.genero = Categoria.fromString(datosSerie.genero().split(",")[0].trim());
+        this.actores = datosSerie.actores();
+        this.sinopsis = datosSerie.sinopsis();
     }
 
     public Long getId() {
@@ -72,6 +45,15 @@ public Serie(DatosSerie datosSerie) {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<Episodio> getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e -> e.setSerie(this));
+        this.episodios = episodios;
     }
 
     public String getTitulo() {
@@ -90,11 +72,11 @@ public Serie(DatosSerie datosSerie) {
         this.totalTemporadas = totalTemporadas;
     }
 
-    public String getEvaluacion() {
+    public Double getEvaluacion() {
         return evaluacion;
     }
 
-    public void setEvaluacion(String evaluacion) {
+    public void setEvaluacion(Double evaluacion) {
         this.evaluacion = evaluacion;
     }
 
@@ -129,7 +111,15 @@ public Serie(DatosSerie datosSerie) {
     public void setSinopsis(String sinopsis) {
         this.sinopsis = sinopsis;
     }
+
+    @Override
+    public String toString() {
+        return  "genero=" + genero +
+                ", titulo='" + titulo + '\'' +
+                ", totalTemporadas=" + totalTemporadas +
+                ", evaluacion=" + evaluacion +
+                ", poster='" + poster + '\'' +
+                ", actores='" + actores + '\'' +
+                ", sinopsis='" + sinopsis;
+    }
 }
-
-
-

@@ -31,6 +31,7 @@ public class Principal {
               1 - Buscar series 
               2 - Buscar episodios
               3 - Listar series buscadas
+              4 - Buscar series por título
               0 - Salir
               """;
             System.out.println(menu);
@@ -48,6 +49,9 @@ public class Principal {
                 case 3:
                     listarSeriesBuscadas();
                     break;
+                case 4:
+                   buscarSeriesPorTitulo();
+                    break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
                     break;
@@ -56,6 +60,8 @@ public class Principal {
             }
         }
     }
+
+
 
     private void buscarSerieWeb() {
         DatosSerie datos = getDatosSerie();
@@ -100,5 +106,10 @@ public class Principal {
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
 
+    }
+
+    private void buscarSeriesPorTitulo() {
+        System.out.println("Escriba el nombre de la serie que desea ver");
+        var nombreSerie = teclado.nextLine();
     }
 }

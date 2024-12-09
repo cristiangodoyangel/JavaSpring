@@ -22,7 +22,7 @@ public class SerieController {
     }
     @GetMapping("/inicio")
     public String muestraMensaje(){
-        return "Bienvenido a Screenmatch";
+        return "Bienvenido a Screenmatchsssssssssssssssssssss";
 
     }
 

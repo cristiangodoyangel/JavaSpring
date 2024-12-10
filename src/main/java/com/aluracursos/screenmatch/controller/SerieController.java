@@ -20,10 +20,6 @@ public class SerieController {
                         s.getPoster(), s.getGenero(), s.getActores(), s.getSinopsis()))
         .collect(Collectors.toList());
     }
-    @GetMapping("/inicio")
-    public String muestraMensaje(){
-        return "Bienvenido a Screenmatchsssssssssssssssssssss";
 
-    }
 
 }
